@@ -1,3 +1,4 @@
+FE = float(input("Enter Foundation English Score:"))
 GBU = float(input("Enter General Business Score:"))
 ICS = float(input("Enter Introduction to Computer Systems Score"))
 CP = float(input("Enter Computer Programming Score:"))
