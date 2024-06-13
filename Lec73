@@ -1,0 +1,22 @@
+menu = {"chicken": 50, 'pork': 60, "beef": 70, "lamb": 80}
+orderlist = []
+
+def bill():
+    total = 0
+    print("----BILL----")
+    for num in range(len(orderlist)):
+        print(orderlist[num].capitalize(), ":", menu[orderlist[num]], "THB")
+        total += menu[orderlist[num]]
+    print("TOTAL :", total, "THB")
+
+
+while True:
+    order = input("Please enter menu: ").lower()
+    if order == "exit":
+        break
+    elif order not in menu:
+        print("Please select another menu.")
+    else:
+        orderlist.append(order)
+
+bill()
