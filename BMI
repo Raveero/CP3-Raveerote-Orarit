@@ -1,0 +1,124 @@
+from tkinter import *
+
+
+Global_BMI = 0
+Result_Label = None
+Result2_Label = None
+Error_Label = None
+describe_Label = None
+
+
+def leftClickButton(event):
+    global Error_Label, describe_Label
+    if describe_Label:
+        describe_Label.destroy()
+        describe_Label = None
+    try :
+        height = int(Height_Entry.get())
+        weigth = int(Weigth_Entry.get())
+        BMI = round(weigth / (height / 100) ** 2, 2)
+        global Global_BMI
+        Global_BMI = BMI
+        return showBMI(BMI)
+    except ValueError:
+        if Error_Label:
+            Error_Label.destroy()
+        Error_Label = Label(main, text="Please Enter Number Only", font=("Lora", 15), fg=("#d62828"))
+        Error_Label.grid(row=4, columnspan=2)
+    except Exception as e:
+        if Error_Label:
+            Error_Label.destroy()
+        Error_Label = Label(main, text=str(e) , font=("Lora", 15), fg=("#d62828"))
+        Error_Label.grid(row=4, columnspan=2)
+
+def showBMI(BMI):
+    global Result_Label, Result2_Label,Error_Label
+    if Result_Label:
+        Result_Label.destroy()
+    if Result2_Label:
+        Result2_Label.destroy()
+    if Error_Label:
+        Error_Label.destroy()
+        Error_Label = None
+    Result_Label = Label(main, text="Your BMI is:", font=("Lora", 15), fg=("#003049"), anchor=W)
+    Result_Label.grid(row=4,column=0,sticky=E)
+    Result2_Label = Label(main, text= BMI , font=("Lora", 15), fg=("#d62828"), anchor=W)
+    Result2_Label.grid(row=4, column=1,sticky=W)
+    information_Button = Button(main, text="More Information", font=("Lora", 12) )
+    information_Button.grid(row=5,columnspan=2,pady=20)
+    information_Button.bind("<Button-1>", Leftclick2)
+
+def Leftclick2(event):
+    print(Global_BMI)
+    describe()
+    main.focus_set()
+
+def describe():
+    global Result_Label, Result2_Label, describe_Label, Global_BMI
+    if Result_Label:
+        Result_Label.destroy()
+        Result_Label = None
+    if Result2_Label:
+        Result2_Label.destroy()
+        Result2_Label = None
+    if describe_Label:
+        describe_Label.destroy()
+        describe_Label = None
+    if int(Global_BMI) < 16:
+        describe_Label = Label(main, text=f"BMI = {Global_BMI} kg/m2   (Severe Thinness)", font=("Lora", 15), fg=("#003049"))
+        describe_Label.grid(row=4, columnspan=2)
+    elif 16 <= int(Global_BMI) < 17:
+        describe_Label = Label(main, text=f"BMI = {Global_BMI} kg/m2   (Moderate Thinness)", font=("Lora", 15),
+                               fg=("#003049"))
+        describe_Label.grid(row=4, columnspan=2)
+    if 17 <= int(Global_BMI) < 18.5:
+        describe_Label = Label(main, text=f"BMI = {Global_BMI} kg/m2   (Mild Thinness)", font=("Lora", 15),
+                               fg=("#003049"))
+    if 18.5 <= int(Global_BMI) < 25:
+        describe_Label = Label(main, text=f"BMI = {Global_BMI} kg/m2   (Normal)", font=("Lora", 15),
+                               fg=("#003049"))
+        describe_Label.grid(row=4, columnspan=2)
+    if 25 <= int(Global_BMI) < 30:
+        describe_Label = Label(main, text=f"BMI = {Global_BMI} kg/m2   (Overweight)", font=("Lora", 15),
+                               fg=("#003049"))
+        describe_Label.grid(row=4, columnspan=2)
+    if 30 <= int(Global_BMI) < 35:
+        describe_Label = Label(main, text=f"BMI = {Global_BMI} kg/m2   (Obese Class I)", font=("Lora", 15),
+                               fg=("#003049"))
+        describe_Label.grid(row=4, columnspan=2)
+    if 35 <= int(Global_BMI) < 40:
+        describe_Label = Label(main, text=f"BMI = {Global_BMI} kg/m2   (Obese Class II)", font=("Lora", 15),
+                               fg=("#003049"))
+        describe_Label.grid(row=4, columnspan=2)
+    elif 40 < int(Global_BMI):
+        describe_Label = Label(main, text=f"BMI = {Global_BMI} kg/m2   (Obese Class III)", font=("Lora", 15),
+                               fg=("#003049"))
+        describe_Label.grid(row=4, columnspan=2)
+
+
+main = Tk()
+BMI_Label = Label(main, text="BMI calculate program", font=("Lora", 15,"bold"), fg=("#f77f00"),height=2,width=50)
+BMI_Label.grid(row=0,columnspan=2)
+
+Height_Label = Label(main, text="Enter Height(cm):", font=("Lora", 15), fg=("#003049"),anchor=W)
+Height_Label.grid(row=1,column=0)
+
+Height_Entry = Entry(main, font=("Lora", 15), fg=("#003049"),width=10)
+Height_Entry.grid(row=1,column=1,sticky=W,pady=10)
+
+
+Weigth_Label = Label(main, text="Enter Weigth(kg):", font=("Lora", 15), fg=("#003049"))
+Weigth_Label.grid(row=2,column=0)
+
+Weigth_Entry = Entry(main, font=("Lora", 15), fg=("#003049"),width=10)
+Weigth_Entry.grid(row=2,column=1,sticky=W,pady=10)
+
+
+Calculation_Button = Button(main, text="Calculate", font=("Lora", 12) )
+Calculation_Button.grid(row=3,columnspan=2,pady=20)
+Calculation_Button.bind("<Button-1>", leftClickButton)
+
+
+
+
+main.mainloop()
